@@ -183,4 +183,10 @@ describe('Pool Contract', () => {
       poolContract.connect(acc2).contractOwnerWithdraw(etherToWei('0.5'))
     ).to.be.reverted;
   });
+
+  // checking the contract balance
+  it("should get the balance of the pool contract", async () => {
+    const contractPoolBal = await poolContract.getPoolBalance()
+    console.log("The pool's balance is: ", contractPoolBal)
+  })
 });

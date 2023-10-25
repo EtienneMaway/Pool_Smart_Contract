@@ -16,19 +16,24 @@ contract PoolContract is Ownable(msg.sender) {
     // Owner withdraw event
     event ContractOwnerWithdrawn(uint256 amount);
 
-    // Should be able to receive ETH
+    // The contract should be able to receive ETH
     receive() external payable {}
 
     // Function to deposit funds to the contract
-    function deposit() external payable {
+    function deposit() public payable {
         // checking if the the amount to deposit is greater than 0
         require(msg.value > 0, 'amount must be greater than 0');
 
         // Incrementing the user's account balance
-        usersBalances[msg.sender] += msg.value;
+        incrementUsersBalance(msg.value);
 
         // emitting a deposit event
         emit Deposited(msg.sender, msg.value);
+    }
+
+    // Incrementing the user's balance figure
+    function incrementUsersBalance(uint256 _amount) internal {
+        usersBalances[msg.sender] += _amount;
     }
 
     // funtion to withdraw funds
@@ -67,6 +72,7 @@ contract PoolContract is Ownable(msg.sender) {
         emit ContractOwnerWithdrawn(_amount);
     }
 
+    // checking the contract balance function
     function getPoolBalance() external view returns (uint256 _amount) {
         return address(this).balance;
     }
